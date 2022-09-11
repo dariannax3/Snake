@@ -100,3 +100,16 @@ TEST_F(SnakeTest, givenDefaultSnakeCoordinatesWhenMakeThreeMovesAfterTurningRigh
 
     EXPECT_EQ(expectedSnakeBody, actualSnakeBody);
 }
+
+TEST_F(SnakeTest, givenDefaultSnakeCoordinatesWhenChangeDirectionToTheSameDirectionThatSnakeIsCurrentlyGoingDirectionDoesNotChange)
+{
+    snake.move();
+    snake.changeDirection(Direction::ToBottom);
+    snake.move();
+
+    auto actualSnakeBody = snake.getBody();
+    std::list<Coordinates> expectedSnakeBody{{3,6},{3,5},{3,4},{3,3},{3,2}};
+
+    EXPECT_EQ(expectedSnakeBody, actualSnakeBody);
+}
+
