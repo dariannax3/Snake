@@ -40,7 +40,18 @@ void Snake::move()
     bodySnake_.pop_back();
 }
 
+bool isOpposite(Direction lhs, Direction rhs)
+{
+    return (rhs == Direction::ToBottom && lhs == Direction::ToTop) ||
+           (rhs == Direction::ToTop && lhs == Direction::ToBottom) ||
+           (rhs == Direction::ToRight && lhs == Direction::ToLeft) ||
+           (rhs == Direction::ToLeft && lhs == Direction::ToRight);
+}
+
 void Snake::changeDirection(const Direction direction)
 {
-    direction_ = direction;
+    if(not isOpposite(direction, direction_))
+    {
+        direction_ = direction;
+    }
 }

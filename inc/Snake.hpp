@@ -33,6 +33,8 @@ enum class Direction
     ToRight,
 };
 
+bool isOpposite(Direction lhs, Direction rhs);
+
 class Snake
 {
 public:
