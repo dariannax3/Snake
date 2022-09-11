@@ -66,9 +66,7 @@ TEST_F(SnakeTest, givenDefaultSnakeCoordinatesWhenMakeOneMoveCheckHeadAndTailCoo
 
 TEST_F(SnakeTest, givenDefaultSnakeCoordinatesWhenMakeOneMoveAfterTurningLeftThenExpectHeadAtLeftField)
 {
-    Direction turnLeft{Direction::ToLeft};
-    
-    snake.changeDirection(turnLeft);
+    snake.changeDirection(Direction::ToLeft);
     snake.move();
 
     auto actualHeadCoordinates = snake.getHead();
@@ -79,14 +77,26 @@ TEST_F(SnakeTest, givenDefaultSnakeCoordinatesWhenMakeOneMoveAfterTurningLeftThe
 
 TEST_F(SnakeTest, givenDefaultSnakeCoordinatesWhenMakeTwoMovesAfterTurningRightThenExpectWholeBodyUpsiteDownLetterL)
 {
-    Direction turnLeft{Direction::ToRight};
-    
-    snake.changeDirection(turnRight);
+    snake.changeDirection(Direction::ToRight);
     snake.move();
     snake.move();
 
     auto actualSnakeBody = snake.getBody();
-    std::vector<Coordinates> expectedSnakeBody{{5,4},{4,4},{3,4},{3,3},{3,2}}; 
+    std::list<Coordinates> expectedSnakeBody{{5,4},{4,4},{3,4},{3,3},{3,2}}; 
+
+    EXPECT_EQ(expectedSnakeBody, actualSnakeBody);
+}
+
+TEST_F(SnakeTest, givenDefaultSnakeCoordinatesWhenMakeThreeMovesAfterTurningRightAndBottomThenExpectWholeBodyReversedLetterP)
+{
+    snake.changeDirection(Direction::ToRight);
+    snake.move();
+    snake.changeDirection(Direction::ToBottom);
+    snake.move();
+    snake.move();
+
+    auto actualSnakeBody = snake.getBody();
+    std::list<Coordinates> expectedSnakeBody{{4,2},{4,3},{4,4},{3,4},{3,3}}; 
 
     EXPECT_EQ(expectedSnakeBody, actualSnakeBody);
 }

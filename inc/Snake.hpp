@@ -1,5 +1,6 @@
 #pragma once
 #include <utility>
+#include <list>
 
 using Coordinates = std::pair<int,int>;
 
@@ -27,27 +28,33 @@ private:
 enum class Direction
 {
     ToTop,
-    ToLeft
+    ToBottom,
+    ToLeft,
+    ToRight,
 };
 
 class Snake
 {
 public:
-    Snake(Coordinates headSnake, Direction direction = Direction::ToTop) : direction_(direction), headSnake_(headSnake)
+    Snake(Coordinates headSnake, Direction direction = Direction::ToTop, const int beginBodySize = 5) : direction_(direction)
     {
-        if(direction == Direction::ToTop)
+        bodySnake_.emplace_back(headSnake);
+        for(int i = 1; i < beginBodySize; i++)
         {
-            tailSnake_ = headSnake;
-            tailSnake_.second -= beginBodySize;
+            if(direction == Direction::ToTop)
+            {
+                auto lastSegment = bodySnake_.back();
+                lastSegment.second--;
+                bodySnake_.emplace_back(lastSegment);
+            }
         }
     }
-    Coordinates getHead() const { return headSnake_; }
-    Coordinates getTail() const { return tailSnake_; }
+    Coordinates getHead() const { return bodySnake_.front(); }
+    Coordinates getTail() const { return bodySnake_.back(); }
+    std::list<Coordinates> getBody() const { return bodySnake_; }
     void move();
     void changeDirection(const Direction direction);
 private:
     Direction direction_;
-    Coordinates headSnake_;
-    Coordinates tailSnake_;
-    const int beginBodySize{4};
+    std::list<Coordinates> bodySnake_;
 };

@@ -17,15 +17,27 @@ FieldState Gameboard::checkFieldAt(const int givenWidth, const int givenHeight)
 
 void Snake::move()
 {
+    auto newHead = getHead();
+    
     if(direction_ == Direction::ToTop)
     {
-        headSnake_.second++;
-        tailSnake_.second++;
+        newHead.second++;
     }
-    else
+    else if(direction_ == Direction::ToBottom)
     {
-        headSnake_.first--;
+        newHead.second--;
     }
+    else if(direction_ == Direction::ToLeft)
+    {
+        newHead.first--;
+    }
+    else if(direction_ == Direction::ToRight)
+    {
+        newHead.first++;
+    }
+
+    bodySnake_.push_front(newHead);
+    bodySnake_.pop_back();
 }
 
 void Snake::changeDirection(const Direction direction)
