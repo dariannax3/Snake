@@ -113,3 +113,59 @@ TEST_F(SnakeTest, givenDefaultSnakeCoordinatesWhenChangeDirectionToTheSameDirect
     EXPECT_EQ(expectedSnakeBody, actualSnakeBody);
 }
 
+TEST(GameTest, givenSnakeInFrontOfFoodWhenSnakeMoveHisWholeBodyThenExpectIncrementedSizeByOne)
+{
+    const int kDimension{10};
+    const int kSnakeBodySize{2};
+    const int kHeadSize{1};
+    Gameboard gameboard(kDimension, kDimension);
+
+    Coordinates headSnake {kDimension/2, kDimension/2};
+    Snake snake(headSnake, Direction::ToTop, kSnakeBodySize);
+
+    gameboard.updateSnake(snake);
+    Coordinates foodCoords(headSnake);
+    foodCoords.second++;
+    gameboard.addFoodAt(foodCoords);
+
+    const int expectedBodySize = snake.getBody().size() + 1;
+    
+    for(int i = 0; i < kSnakeBodySize + kHeadSize; i++)
+    {
+        snake.move();
+    }
+
+    EXPECT_EQ(snake.getBody().size(), expectedBodySize);
+}
+
+// TEST(GameTest, givenSnakeInFrontOfFoodWhenSnakeAteFoodAndMoveThreeTimesThenExpectSnakeIncrementedAtTail)
+// {
+//     const int dimension{10};
+//     const int beginBodySize{2};
+//     Gameboard gameboard(dimension, dimension);
+
+//     Coordinates headSnake {dimension/2, dimension/2};
+//     Snake snake(headSnake, Direction::ToTop, beginBodySize);
+
+//     gameboard.createSnake(snake);
+
+//     Coordinates foodCoords(headSnake);
+//     foodCoords.second++;
+//     gameboard.addFoodAt(foodCoords);
+
+//     snake.move();
+//     gameboard.updateSnake(snake);
+
+//     snake.move();
+//     gameboard.updateSnake(snake);
+
+//     snake.move();
+//     gameboard.updateSnake(snake);
+
+//     std::vector<Coordinates> expectedSnake{{3,6}, {3,7}, {3,8}};
+
+//     for(auto coordinate : expectedSnake)
+//     {
+//         EXPECT_EQ(gameboard.checkFieldAt(coordinate.first,coordinate.second), FieldState::SnakeSegment);
+//     }
+// }
