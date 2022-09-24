@@ -2,28 +2,8 @@
 #include <utility>
 #include <list>
 
+
 using Coordinates = std::pair<int,int>;
-
-enum class FieldState {
-    Wall,
-    Empty
-};
-
-bool isInRange(int begin, int end, int value);
-
-class Gameboard {
-public:
-    Gameboard(int width, int height) : width_(width), height_(height) {}
-    ~Gameboard() = default;
-
-    FieldState checkFieldAt(const int width, const int height);
-
-    int getWidth() const { return width_; }
-    int getHeight() const { return height_; }
-private:
-    int width_;
-    int height_;
-};
 
 enum class Direction
 {
@@ -53,10 +33,13 @@ public:
     }
     Coordinates getHead() const { return bodySnake_.front(); }
     Coordinates getTail() const { return bodySnake_.back(); }
+    Coordinates getPrevTail() const { return prevTail_; }
     std::list<Coordinates> getBody() const { return bodySnake_; }
     void move();
     void changeDirection(const Direction direction);
+    void increaseSnake(const Coordinates newTail);
 private:
     Direction direction_;
+    Coordinates prevTail_;
     std::list<Coordinates> bodySnake_;
 };

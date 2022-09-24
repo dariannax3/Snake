@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "../inc/Snake.hpp"
+#include "../inc/Gameboard.hpp"
 
 using namespace testing;
 
@@ -124,16 +125,23 @@ TEST(GameTest, givenSnakeInFrontOfFoodWhenSnakeMoveHisWholeBodyThenExpectIncreme
     Snake snake(headSnake, Direction::ToTop, kSnakeBodySize);
 
     gameboard.updateSnake(snake);
+
+    //  auto gameboard = gameboard.getGameboard();
+    displayGameboard(gameboard.getGameboard());
+
     Coordinates foodCoords(headSnake);
     foodCoords.second++;
     gameboard.addFoodAt(foodCoords);
-
-    const int expectedBodySize = snake.getBody().size() + 1;
     
+    displayGameboard(gameboard.getGameboard());
+    const int expectedBodySize = snake.getBody().size() + 1;
     for(int i = 0; i < kSnakeBodySize + kHeadSize; i++)
     {
         snake.move();
+        gameboard.updateSnake(snake);
+        displayGameboard(gameboard.getGameboard());
     }
+    displayGameboard(gameboard.getGameboard());
 
     EXPECT_EQ(snake.getBody().size(), expectedBodySize);
 }

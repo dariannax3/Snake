@@ -19,6 +19,7 @@ enable_testing()
 add_executable(
     ${CMAKE_PROJECT_NAME}-test
     src/Snake.cpp
+    src/Gameboard.cpp
     test/TestSnake.cpp
 )
 target_link_libraries(

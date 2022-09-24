@@ -1,23 +1,10 @@
 #include "../inc/Snake.hpp"
-
-bool isInRange(int begin, int end, int value)
-{
-    return begin <= value && value < end; 
-}
-
-FieldState Gameboard::checkFieldAt(const int givenWidth, const int givenHeight)
-{
-    if(isInRange(0,getHeight(), givenHeight) &&
-       isInRange(0, getWidth(), givenWidth))
-    {
-        return FieldState::Empty;
-    }
-    return FieldState::Wall;
-}
+#include <iostream>
 
 void Snake::move()
 {
     auto newHead = getHead();
+
     
     if(direction_ == Direction::ToTop)
     {
@@ -37,6 +24,7 @@ void Snake::move()
     }
 
     bodySnake_.push_front(newHead);
+    prevTail_ = bodySnake_.back();
     bodySnake_.pop_back();
 }
 
@@ -54,4 +42,9 @@ void Snake::changeDirection(const Direction direction)
     {
         direction_ = direction;
     }
+}
+
+void Snake::increaseSnake(const Coordinates newTail)
+{
+    bodySnake_.emplace_back(newTail);
 }
