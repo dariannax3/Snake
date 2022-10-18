@@ -126,22 +126,16 @@ TEST(GameTest, givenSnakeInFrontOfFoodWhenSnakeMoveHisWholeBodyThenExpectIncreme
 
     gameboard.updateSnake(snake);
 
-    //  auto gameboard = gameboard.getGameboard();
-    displayGameboard(gameboard.getGameboard());
-
     Coordinates foodCoords(headSnake);
     foodCoords.second++;
     gameboard.addFoodAt(foodCoords);
     
-    displayGameboard(gameboard.getGameboard());
     const int expectedBodySize = snake.getBody().size() + 1;
     for(int i = 0; i < kSnakeBodySize + kHeadSize; i++)
     {
         snake.move();
         gameboard.updateSnake(snake);
-        displayGameboard(gameboard.getGameboard());
     }
-    displayGameboard(gameboard.getGameboard());
 
     EXPECT_EQ(snake.getBody().size(), expectedBodySize);
 }

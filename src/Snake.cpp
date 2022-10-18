@@ -1,11 +1,24 @@
 #include "../inc/Snake.hpp"
-#include <iostream>
+
+Snake::Snake(Coordinates headSnake, Direction direction, const int beginBodySize)
+    : direction_(direction)
+{
+    bodySnake_.emplace_back(headSnake);
+    for(int i = 1; i < beginBodySize; i++)
+    {
+        if(direction == Direction::ToTop)
+        {
+            auto lastSegment = bodySnake_.back();
+            lastSegment.second--;
+            bodySnake_.emplace_back(lastSegment);
+        }
+    }
+}
 
 void Snake::move()
 {
     auto newHead = getHead();
 
-    
     if(direction_ == Direction::ToTop)
     {
         newHead.second++;

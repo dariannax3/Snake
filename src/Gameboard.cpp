@@ -5,9 +5,23 @@ bool isInRange(int begin, int end, int value)
     return begin <= value && value < end; 
 }
 
-FieldState Gameboard::checkFieldAt(const int givenWidth, const int givenHeight)
+void displayGameboard(const std::vector<std::vector<FieldState>>& matrix)
 {
-    if(isInRange(0,getHeight(), givenHeight) &&
+    for(auto row_obj : matrix)
+    {
+        for (auto elem: row_obj)
+        {
+            std::cout<<elem<<" ";
+        }
+        std::cout<<std::endl;
+    }
+    std::cout<<std::endl;
+}
+
+
+FieldState Gameboard::checkFieldAt(const int givenWidth, const int givenHeight) const
+{
+    if(isInRange(0, getHeight(), givenHeight) &&
        isInRange(0, getWidth(), givenWidth))
     {
         return FieldState::Empty;
@@ -15,19 +29,17 @@ FieldState Gameboard::checkFieldAt(const int givenWidth, const int givenHeight)
     return FieldState::Wall;
 }
 
-void Gameboard::initializeDefaultGameboard()
+void Gameboard::initializeDefaultGameboard(int width, int height)
 {
-    for (int i = 0; i < width_; i++)
+    for (int i = 0; i < width; i++)
     {
-        std::vector<FieldState> v;
-        for (int j = 0; j < height_; j++) {
-            v.push_back(FieldState::Empty);
+        std::vector<FieldState> row;
+        for (int j = 0; j < height; j++) {
+            row.push_back(FieldState::Empty);
         }
-        gameboard_.push_back(v);
+        gameboard_.push_back(row);
     }
 }
-
-
 
 void Gameboard::updateSnake(Snake& snake)
 {
