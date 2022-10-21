@@ -24,7 +24,7 @@ FieldState Gameboard::checkFieldAt(const int givenWidth, const int givenHeight) 
     if(isInRange(0, getHeight(), givenHeight) &&
        isInRange(0, getWidth(), givenWidth))
     {
-        return FieldState::Empty;
+        return gameboard_[givenWidth][givenHeight];
     }
     return FieldState::Wall;
 }
