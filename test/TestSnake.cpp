@@ -35,7 +35,7 @@ TEST_F(GameboardTest, givenDefaultGameboardWhenCheckTheFieldOutOfBoardWidthThenR
 class SnakeTest : public ::Test 
 {
 public: 
-    SnakeTest() : headSnakeAtBegin{3,4}, snake(headSnakeAtBegin) {}
+    SnakeTest() : headSnakeAtBegin{6,7}, snake(headSnakeAtBegin) {}
 
 protected:
     const Coordinates headSnakeAtBegin;
@@ -47,7 +47,7 @@ TEST_F(SnakeTest, givenDefaultSnakeWhenCheckTailCoordinatesThenReturnFourCoordin
     auto actualTailCoordinates = snake.getTail();
     
     Coordinates expectedTailCoordinates = headSnakeAtBegin;
-    expectedTailCoordinates.second -= 4;
+    expectedTailCoordinates.first += 4;
 
     EXPECT_EQ(expectedTailCoordinates, actualTailCoordinates);
 }
@@ -57,9 +57,9 @@ TEST_F(SnakeTest, givenDefaultSnakeCoordinatesWhenMakeOneMoveCheckHeadAndTailCoo
     snake.move();
 
     auto actualHeadCoordinates = snake.getHead();
-    Coordinates expectedHeadCoordinates{3,5};
+    Coordinates expectedHeadCoordinates{5,7};
     auto actualTailCoordinates = snake.getTail();
-    Coordinates expectedTailCoordinates{3,1};
+    Coordinates expectedTailCoordinates{9,7};
 
     EXPECT_EQ(expectedHeadCoordinates, actualHeadCoordinates);
     EXPECT_EQ(expectedTailCoordinates, actualTailCoordinates);
@@ -67,11 +67,13 @@ TEST_F(SnakeTest, givenDefaultSnakeCoordinatesWhenMakeOneMoveCheckHeadAndTailCoo
 
 TEST_F(SnakeTest, givenDefaultSnakeCoordinatesWhenMakeOneMoveAfterTurningLeftThenExpectHeadAtLeftField)
 {
+    Coordinates expectedHeadCoordinates(snake.getHead());
+    expectedHeadCoordinates.second--;
+
     snake.changeDirection(Direction::ToLeft);
     snake.move();
 
     auto actualHeadCoordinates = snake.getHead();
-    Coordinates expectedHeadCoordinates{2,4};
 
     EXPECT_EQ(expectedHeadCoordinates, actualHeadCoordinates);
 }
@@ -83,7 +85,7 @@ TEST_F(SnakeTest, givenDefaultSnakeCoordinatesWhenMakeTwoMovesAfterTurningRightT
     snake.move();
 
     auto actualSnakeBody = snake.getBody();
-    std::list<Coordinates> expectedSnakeBody{{5,4},{4,4},{3,4},{3,3},{3,2}}; 
+    std::list<Coordinates> expectedSnakeBody{{6,9}, {6,8}, {6,7}, {7,7}, {8,7}};
 
     EXPECT_EQ(expectedSnakeBody, actualSnakeBody);
 }
@@ -97,7 +99,7 @@ TEST_F(SnakeTest, givenDefaultSnakeCoordinatesWhenMakeThreeMovesAfterTurningRigh
     snake.move();
 
     auto actualSnakeBody = snake.getBody();
-    std::list<Coordinates> expectedSnakeBody{{4,2},{4,3},{4,4},{3,4},{3,3}}; 
+    std::list<Coordinates> expectedSnakeBody{{8,8},{7,8},{6,8},{6,7},{7,7}};
 
     EXPECT_EQ(expectedSnakeBody, actualSnakeBody);
 }
@@ -109,7 +111,7 @@ TEST_F(SnakeTest, givenDefaultSnakeCoordinatesWhenChangeDirectionToTheSameDirect
     snake.move();
 
     auto actualSnakeBody = snake.getBody();
-    std::list<Coordinates> expectedSnakeBody{{3,6},{3,5},{3,4},{3,3},{3,2}};
+    std::list<Coordinates> expectedSnakeBody{{4,7},{5,7},{6,7},{7,7},{8,7}};
 
     EXPECT_EQ(expectedSnakeBody, actualSnakeBody);
 }
@@ -127,9 +129,9 @@ TEST(GameTest, givenSnakeInFrontOfFoodWhenSnakeMoveHisWholeBodyThenExpectIncreme
     gameboard.updateSnake(snake);
 
     Coordinates foodCoords(headSnake);
-    foodCoords.second++;
+    foodCoords.first--;
     gameboard.addFoodAt(foodCoords);
-    
+
     const int expectedBodySize = snake.getBody().size() + 1;
     for(int i = 0; i < kSnakeBodySize + kHeadSize; i++)
     {
@@ -148,9 +150,10 @@ TEST(GameTest, givenSnakeInFrontOfFoodWhenSnakeAteFoodAndMoveThreeTimesThenExpec
 
     Coordinates headSnake {dimension/2, dimension/2};
     Snake snake(headSnake, Direction::ToTop, beginBodySize);
+    gameboard.updateSnake(snake);
 
     Coordinates foodCoords(headSnake);
-    foodCoords.second++;
+    foodCoords.first--;
     gameboard.addFoodAt(foodCoords);
 
     snake.move();
@@ -162,7 +165,7 @@ TEST(GameTest, givenSnakeInFrontOfFoodWhenSnakeAteFoodAndMoveThreeTimesThenExpec
     snake.move();
     gameboard.updateSnake(snake);
 
-    std::vector<Coordinates> expectedSnake{{3,6}, {3,7}, {3,8}};
+    std::vector<Coordinates> expectedSnake{{2,5}, {3,5}, {4,5}};
 
     for(auto coordinate : expectedSnake)
     {
