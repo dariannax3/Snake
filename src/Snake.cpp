@@ -9,7 +9,7 @@ Snake::Snake(Coordinates headSnake, Direction direction, const int beginBodySize
         if(direction == Direction::ToTop)
         {
             auto lastSegment = bodySnake_.back();
-            lastSegment.second--;
+            lastSegment.first++;
             bodySnake_.emplace_back(lastSegment);
         }
     }
@@ -21,19 +21,19 @@ void Snake::move()
 
     if(direction_ == Direction::ToTop)
     {
-        newHead.second++;
+        newHead.first--;
     }
     else if(direction_ == Direction::ToBottom)
     {
-        newHead.second--;
+        newHead.first++;
     }
     else if(direction_ == Direction::ToLeft)
     {
-        newHead.first--;
+        newHead.second--;
     }
     else if(direction_ == Direction::ToRight)
     {
-        newHead.first++;
+        newHead.second++;
     }
 
     bodySnake_.push_front(newHead);
